@@ -1,0 +1,110 @@
+// Prisma Schema
+// This defines your database tables in a clean readable format.
+// Prisma will generate TypeScript types automatically from this.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  username     String?
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  // Relations
+  preferences  UserPreferences?
+  watchlist    Watchlist[]
+  ratings      Rating[]
+  logs         RecommendationLog[]
+
+  @@map("users")
+}
+
+model UserPreferences {
+  id                 String   @id @default(uuid())
+  userId             String   @unique @map("user_id")
+  preferredGenres    String[] @map("preferred_genres")
+  preferredLanguages String[] @map("preferred_languages")
+  preferredEras      String[] @map("preferred_eras")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("user_preferences")
+}
+
+model Film {
+  tmdbId             Int      @id @map("tmdb_id")
+  title              String
+  overview           String?
+  tagline            String?
+  genres             String?
+  releaseYear        Int?     @map("release_year")
+  originalLanguage   String?  @map("original_language")
+  voteAverage        Float?   @map("vote_average")
+  voteCount          Int?     @map("vote_count")
+  runtime            Int?
+  director           String?
+  castList           String?  @map("cast_list")
+  keywords           String?
+  posterPath         String?  @map("poster_path")
+  productionCountries String? @map("production_countries")
+  budget             BigInt?
+  revenue            BigInt?
+  soup               String?
+  isIndie            Boolean  @default(false) @map("is_indie")
+  createdAt          DateTime @default(now()) @map("created_at")
+
+  watchlist Watchlist[]
+  ratings   Rating[]
+
+  @@map("films")
+}
+
+model Watchlist {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  tmdbId    Int      @map("tmdb_id")
+  status    String   @default("want_to_watch")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id])
+  film Film @relation(fields: [tmdbId], references: [tmdbId])
+
+  @@unique([userId, tmdbId])
+  @@map("watchlist")
+}
+
+model Rating {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  tmdbId    Int      @map("tmdb_id")
+  rating    Int
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id])
+  film Film @relation(fields: [tmdbId], references: [tmdbId])
+
+  @@unique([userId, tmdbId])
+  @@map("ratings")
+}
+
+model RecommendationLog {
+  id        String   @id @default(uuid())
+  userId    String?  @map("user_id")
+  modelUsed String   @map("model_used")
+  query     String?
+  results   Json?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User? @relation(fields: [userId], references: [id])
+
+  @@map("recommendation_logs")
+}
