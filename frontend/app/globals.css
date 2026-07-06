@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+/* ── Design system tokens ───────────────────────────────────────────────── */
+:root {
+  --bg:            #0a0a0a;
+  --surface:       #111111;
+  --surface-hover: #1a1a1a;
+  --border:        #222222;
+  --border-hover:  #333333;
+  --primary:       #7c3aed;
+  --primary-hover: #6d28d9;
+  --primary-glow:  rgba(124, 58, 237, 0.15);
+  --accent:        #a78bfa;
+  --text-primary:  #ffffff;
+  --text-secondary:#a1a1aa;
+  --text-muted:    #52525b;
+  --gold:          #fbbf24;
+  --green:         #10b981;
+}
+
+/* ── Base ────────────────────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--primary);
+  color: #fff;
+}
+
+/* ── Dark scrollbar ──────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track  { background: var(--surface); }
+::-webkit-scrollbar-thumb  { background: var(--primary); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary-hover); }
+* { scrollbar-color: var(--primary) var(--surface); scrollbar-width: thin; }
+
+/* ── Keyframes ───────────────────────────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px var(--primary-glow); }
+  50%       { box-shadow: 0 0 40px rgba(124,58,237,0.3); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-12px); }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── Custom utility classes ─────────────────────────────────────────────── */
+@utility scrollbar-hide {
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+@utility skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--surface) 25%,
+    var(--surface-hover) 50%,
+    var(--surface) 75%
+  );
+  background-size: 400px 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+@utility fade-in-up {
+  animation: fadeInUp 0.5s ease-out both;
+}
+
+@utility gradient-text {
+  background: linear-gradient(135deg, var(--accent) 0%, #e879f9 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@utility film-card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  &:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 8px 32px var(--primary-glow), 0 0 0 1px var(--primary);
+  }
+}
+
+@utility glass {
+  background: rgba(17,17,17,0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
