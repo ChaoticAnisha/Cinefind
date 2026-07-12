@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { Film, X, Eye, EyeOff } from 'lucide-react'
 import { login } from '@/lib/api'
 import { useAuthStore } from '@/lib/store'
+import PosterCollage from '@/app/components/PosterCollage'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -35,25 +36,26 @@ export default function LoginPage() {
     <div className="min-h-screen grid md:grid-cols-2 bg-[#0a0a0a]">
 
       {/* ── Left: branding ──────────────────────────────────────────────── */}
-      <div className="hidden md:flex flex-col justify-between p-12 bg-[linear-gradient(135deg,#1e1b4b_0%,#0f0f0f_100%)] border-r border-[#1a1a1a]">
-        <Link href="/" className="flex items-center gap-2 text-white font-bold text-xl">
+      <div className="hidden md:flex flex-col justify-between p-12 relative overflow-hidden border-r border-[#1a1a1a]">
+        <PosterCollage />
+        <Link href="/" className="relative z-10 flex items-center gap-2 text-white font-bold text-xl">
           <div className="w-8 h-8 rounded-lg bg-[#7c3aed] flex items-center justify-center">
             <Film size={16} className="text-white" />
           </div>
           CineFind
         </Link>
 
-        <div>
+        <div className="relative z-10">
           <p className="text-[#a78bfa] text-xs uppercase tracking-widest mb-4 font-medium">Discover · Explore · Save</p>
           <h2 className="text-3xl font-bold text-white leading-tight mb-4">
             Your personal<br />indie film curator
           </h2>
-          <p className="text-[#52525b] text-sm leading-relaxed max-w-xs">
+          <p className="text-[#a1a1aa] text-sm leading-relaxed max-w-xs">
             3,000+ indie films. Three AI models. One purpose — finding the film that fits exactly what you're in the mood for.
           </p>
         </div>
 
-        <p className="text-[#333333] text-xs">© 2025 CineFind · BSc Dissertation Project</p>
+        <p className="relative z-10 text-[#52525b] text-xs">© 2025 CineFind · BSc Dissertation Project</p>
       </div>
 
       {/* ── Right: form ─────────────────────────────────────────────────── */}

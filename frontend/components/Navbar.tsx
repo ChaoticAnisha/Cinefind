@@ -87,12 +87,23 @@ export default function Navbar() {
               </>
             ) : (
               <>
-                <Link href="/auth/login" className="text-[#a1a1aa] hover:text-white transition-colors">
+                <Link
+                  href="/auth/login"
+                  className={`px-3 py-1.5 rounded-md transition-colors ${
+                    pathname === '/auth/login'
+                      ? 'text-white bg-[#7c3aed]/15 border border-[#7c3aed]/40'
+                      : 'text-[#a1a1aa] hover:text-white'
+                  }`}
+                >
                   Login
                 </Link>
                 <Link
                   href="/auth/register"
-                  className="bg-[#7c3aed] hover:bg-[#6d28d9] text-white px-4 py-1.5 rounded-full font-medium transition-colors text-sm"
+                  className={`px-4 py-1.5 rounded-full font-medium transition-colors text-sm ${
+                    pathname === '/auth/register'
+                      ? 'bg-[#6d28d9] text-white ring-2 ring-[#7c3aed]/50'
+                      : 'bg-[#7c3aed] hover:bg-[#6d28d9] text-white'
+                  }`}
                 >
                   Sign up free
                 </Link>

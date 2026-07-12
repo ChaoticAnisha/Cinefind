@@ -8,6 +8,7 @@ import FilmGrid from '@/components/FilmGrid'
 import { SkeletonRow } from '@/components/LoadingSpinner'
 import { useAuthStore } from '@/lib/store'
 import Link from 'next/link'
+import PosterCollage from '@/app/components/PosterCollage'
 
 /* ── Mood config ────────────────────────────────────────────────────────── */
 const MOODS = [
@@ -152,8 +153,9 @@ export default function DiscoverPage() {
     <div className="min-h-screen bg-[#0a0a0a]">
 
       {/* ── Hero banner ─────────────────────────────────────────────────── */}
-      <div className="bg-[linear-gradient(135deg,#1e1b4b_0%,#0f0f0f_60%)] border-b border-[#1a1a1a]">
-        <div className="max-w-7xl mx-auto px-4 py-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="relative overflow-hidden border-b border-[#1a1a1a]">
+        <PosterCollage />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 py-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div>
             <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight flex items-center gap-3">
               <Compass size={30} className="text-[#a78bfa]" />
