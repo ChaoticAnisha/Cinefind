@@ -89,10 +89,10 @@ export default function Navbar() {
               <>
                 <Link
                   href="/auth/login"
-                  className={`px-3 py-1.5 rounded-md transition-colors ${
+                  className={`px-4 py-1.5 rounded-full font-medium transition-colors text-sm ${
                     pathname === '/auth/login'
-                      ? 'text-white bg-[#7c3aed]/15 border border-[#7c3aed]/40'
-                      : 'text-[#a1a1aa] hover:text-white'
+                      ? 'bg-[#7c3aed] text-white ring-2 ring-[#7c3aed]/50'
+                      : 'border border-[#333333] text-[#a1a1aa] hover:border-[#7c3aed] hover:text-white'
                   }`}
                 >
                   Login
@@ -101,8 +101,8 @@ export default function Navbar() {
                   href="/auth/register"
                   className={`px-4 py-1.5 rounded-full font-medium transition-colors text-sm ${
                     pathname === '/auth/register'
-                      ? 'bg-[#6d28d9] text-white ring-2 ring-[#7c3aed]/50'
-                      : 'bg-[#7c3aed] hover:bg-[#6d28d9] text-white'
+                      ? 'bg-[#7c3aed] text-white ring-2 ring-[#7c3aed]/50'
+                      : 'border border-[#333333] text-[#a1a1aa] hover:border-[#7c3aed] hover:text-white'
                   }`}
                 >
                   Sign up free

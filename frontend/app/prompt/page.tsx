@@ -5,6 +5,7 @@ import { Sparkles, ArrowRight, AlertCircle } from 'lucide-react'
 import { getPromptRecommendations, compareModels } from '@/lib/api'
 import { RecommendedFilm } from '@/lib/types'
 import FilmGrid from '@/components/FilmGrid'
+import PosterCollage from '@/app/components/PosterCollage'
 
 const EXAMPLES = [
   'Dark psychological Korean thriller from the 2000s',
@@ -69,8 +70,9 @@ export default function PromptPage() {
     <div className="min-h-screen bg-[#0a0a0a]">
 
       {/* ── Header ──────────────────────────────────────────────────────── */}
-      <div className="bg-[linear-gradient(135deg,#1e1b4b_0%,#0f0f0f_60%)] border-b border-[#1a1a1a] py-12 px-4">
-        <div className="max-w-2xl mx-auto text-center">
+      <div className="relative overflow-hidden border-b border-[#1a1a1a] py-12 px-4">
+        <PosterCollage />
+        <div className="relative z-10 max-w-2xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-[#7c3aed]/10 border border-[#7c3aed]/30 text-[#a78bfa] text-xs px-3 py-1.5 rounded-full mb-4 uppercase tracking-wider font-medium">
             <Sparkles size={11} /> AI Film Discovery
           </div>

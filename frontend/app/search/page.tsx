@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Search, SlidersHorizontal, X } from 'lucide-react'
 import { searchFilms } from '@/lib/api'
 import FilmGrid from '@/components/FilmGrid'
+import PosterCollage from '@/app/components/PosterCollage'
 
 const GENRES = ['Drama', 'Thriller', 'Horror', 'Comedy', 'Documentary', 'Animation', 'Crime', 'Romance']
 const LANGUAGES = [
@@ -66,8 +67,9 @@ export default function SearchPage() {
     <div className="min-h-screen bg-[#0a0a0a]">
 
       {/* ── Search header ────────────────────────────────────────────────── */}
-      <div className="bg-[linear-gradient(180deg,#111111_0%,#0a0a0a_100%)] border-b border-[#1a1a1a] py-10 px-4">
-        <div className="max-w-3xl mx-auto">
+      <div className="relative overflow-hidden border-b border-[#1a1a1a] py-10 px-4">
+        <PosterCollage />
+        <div className="relative z-10 max-w-3xl mx-auto">
           <h1 className="text-2xl font-bold text-white text-center mb-6 flex items-center justify-center gap-2">
             <Search size={22} className="text-[#a78bfa]" />
             Search Films
