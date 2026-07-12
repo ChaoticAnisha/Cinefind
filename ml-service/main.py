@@ -29,16 +29,33 @@ CHROMA_DIR = "./chroma_db"
 # CSV_PATH used as fallback only — embeddings.npy in chroma_dir takes priority
 CSV_PATH = "./models/films_clean.csv"
 
-print("Loading models...")
-tfidf_rec = TFIDFRecommender()
-tfidf_rec.load(SAVE_DIR)
+_tfidf = None
+_emb = None
+_hybrid = None
 
-emb_rec = EmbeddingRecommender()
-emb_rec.load(CSV_PATH, CHROMA_DIR)
+def get_tfidf():
+    global _tfidf
+    if _tfidf is None:
+        print("Loading TF-IDF model...")
+        _tfidf = TFIDFRecommender()
+        _tfidf.load(SAVE_DIR)
+        print("TF-IDF ready.")
+    return _tfidf
 
-hybrid_rec = HybridRecommender(tfidf_rec, emb_rec)
+def get_emb():
+    global _emb
+    if _emb is None:
+        print("Loading embedding model...")
+        _emb = EmbeddingRecommender()
+        _emb.load(CSV_PATH, CHROMA_DIR)
+        print("Embedding ready.")
+    return _emb
 
-print("All models loaded. Server ready.")
+def get_hybrid():
+    global _hybrid
+    if _hybrid is None:
+        _hybrid = HybridRecommender(get_tfidf(), get_emb())
+    return _hybrid
 
 
 # --- Request/Response models ---
@@ -72,7 +89,6 @@ def root():
     return {
         "status": "running",
         "models": ["tfidf", "embedding", "hybrid"],
-        "films_indexed": tfidf_rec.tfidf_matrix.shape[0]
     }
 
 @app.get("/health")
@@ -92,6 +108,7 @@ def recommend_tfidf(req: TFIDFRequest):
     if not req.tmdb_id and not req.query:
         raise HTTPException(400, "Provide either tmdb_id or query")
 
+    tfidf_rec = get_tfidf()
     if req.query:
         results = tfidf_rec.recommend_by_text(req.query, n=req.n)
     else:
@@ -108,6 +125,7 @@ def recommend_embedding(req: EmbeddingRequest):
     { "query": "emotional Korean family drama" }
     { "query": "indie horror social commentary", "filters": {"is_indie": 1} }
     """
+    emb_rec = get_emb()
     if req.tmdb_id and not req.query:
         results = emb_rec.recommend_by_id(req.tmdb_id, n=req.n)
     else:
@@ -127,6 +145,7 @@ def recommend_hybrid(req: HybridRequest):
     if not req.query and not req.tmdb_id:
         raise HTTPException(400, "Provide either query or tmdb_id")
 
+    hybrid_rec = get_hybrid()
     results = hybrid_rec.recommend(
         query=req.query,
         tmdb_id=req.tmdb_id,
@@ -141,6 +160,7 @@ def recommend_hybrid(req: HybridRequest):
 @app.get("/film/{tmdb_id}")
 def get_film(tmdb_id: int):
     """Get details for a specific film by TMDB ID."""
+    tfidf_rec = get_tfidf()
     rows = tfidf_rec.df[tfidf_rec.df['tmdb_id'] == tmdb_id]
     if rows.empty:
         raise HTTPException(404, f"Film {tmdb_id} not found")

@@ -66,7 +66,7 @@ class EmbeddingRecommender:
             return
 
         print("Loading pre-computed embeddings from disk...")
-        self.embeddings = np.load(emb_path)
+        self.embeddings = np.load(emb_path, mmap_mode='r')
         self.tmdb_ids = np.load(ids_path).tolist()
 
         self.df = pd.read_csv(os.path.join(chroma_dir, "emb_films.csv"))

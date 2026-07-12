@@ -1,8 +1,9 @@
 fastapi
 uvicorn[standard]
 scikit-learn
-sentence-transformers
 numpy
 pandas
 python-dotenv
 pydantic
+torch --index-url https://download.pytorch.org/whl/cpu
+sentence-transformers
