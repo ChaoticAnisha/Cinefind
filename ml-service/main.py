@@ -75,6 +75,11 @@ def root():
         "films_indexed": tfidf_rec.tfidf_matrix.shape[0]
     }
 
+@app.get("/health")
+def health():
+    """Render health check — must return 200."""
+    return {"status": "ok"}
+
 @app.post("/recommend/tfidf")
 def recommend_tfidf(req: TFIDFRequest):
     """
@@ -154,3 +159,9 @@ def get_film(tmdb_id: int):
         "cast_list": film['cast_list'],
         "is_indie": bool(film['is_indie'])
     }
+
+
+if __name__ == "__main__":
+    import uvicorn
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)

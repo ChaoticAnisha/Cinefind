@@ -1,32 +1,24 @@
+# Dependencies
+node_modules/
+.next/
+dist/
+build/
+
+# Environment files (never commit secrets)
+.env
+.env.local
+.env.production
+backend/.env
+frontend/.env.local
+frontend/.env.production
+ml-service/.env
+
 # Python
 __pycache__/
 *.pyc
 *.pyo
 .venv/
 venv/
-*.pkl
-*.npy
-chroma_db/
-models/
-ml-service/models/
-ml-service/chroma_db/
-
-# Node
-node_modules/
-.next/
-dist/
-build/
-
-# Environment files
-.env
-.env.local
-backend/.env
-frontend/.env.local
-ml-service/.env
-
-# Data files (too large)
-data/*.csv
-ml-service/data/
 
 # OS
 .DS_Store
@@ -35,3 +27,9 @@ Thumbs.db
 # IDE
 .vscode/
 .idea/
+
+# Claude Code internal
+.claude/
+
+# Model files are small enough to commit directly (total ~38 MB)
+# so NO exclusion for *.pkl / *.npy / *.csv here

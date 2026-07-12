@@ -9,8 +9,25 @@ const app = express()
 const PORT = parseInt(process.env.PORT || '3001', 10)
 
 // ── Middleware ──────────────────────────────────────────────────────────────
+const ALLOWED_ORIGINS = [
+  'http://localhost:3000',
+  'http://localhost:3001',
+  process.env.FRONTEND_URL,           // set on Render after Vercel URL is known
+].filter(Boolean) as string[]
+
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:3001'],
+  origin: (origin, cb) => {
+    // Allow requests with no origin (Postman, curl, server-to-server)
+    if (!origin) return cb(null, true)
+    // Allow any Vercel preview/production URL and localhost
+    if (
+      ALLOWED_ORIGINS.includes(origin) ||
+      origin.endsWith('.vercel.app')
+    ) {
+      return cb(null, true)
+    }
+    return cb(new Error('Not allowed by CORS'))
+  },
   credentials: true,
 }))
 app.use(express.json())

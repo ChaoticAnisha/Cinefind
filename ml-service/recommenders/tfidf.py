@@ -14,6 +14,16 @@ from sklearn.metrics.pairwise import cosine_similarity
 import pickle
 import os
 
+
+def _safe(val, cast=str):
+    """Convert pandas/numpy value to a native Python type safely."""
+    try:
+        if pd.isna(val):
+            return "" if cast == str else 0
+    except (TypeError, ValueError):
+        pass
+    return cast(val)
+
 class TFIDFRecommender:
     def __init__(self):
         # These will be filled when we call build() or load()
@@ -131,17 +141,17 @@ class TFIDFRecommender:
         for i in top_indices:
             film = self.df.iloc[i]
             results.append({
-                "tmdb_id": int(film['tmdb_id']),
-                "title": film['title'],
-                "overview": str(film['overview'])[:200],  # truncate for API response
-                "genres": film['genres'],
-                "release_year": film['release_year'],
-                "vote_average": film['vote_average'],
-                "vote_count": film['vote_count'],
-                "poster_path": film['poster_path'],
-                "is_indie": bool(film['is_indie']),
+                "tmdb_id":          int(film['tmdb_id']),
+                "title":            _safe(film['title'], str),
+                "overview":         _safe(film['overview'], str)[:200],
+                "genres":           _safe(film['genres'], str),
+                "release_year":     int(film['release_year']) if str(film['release_year']) not in ('nan', '') else 0,
+                "vote_average":     float(film['vote_average']) if str(film['vote_average']) not in ('nan', '') else 0.0,
+                "vote_count":       int(film['vote_count']) if str(film['vote_count']) not in ('nan', '') else 0,
+                "poster_path":      _safe(film['poster_path'], str),
+                "is_indie":         bool(film['is_indie']),
                 "similarity_score": float(sim_scores[i]),
-                "model": "tfidf"
+                "model":            "tfidf"
             })
 
         return results
@@ -171,17 +181,17 @@ class TFIDFRecommender:
                 continue
             film = self.df.iloc[i]
             results.append({
-                "tmdb_id": int(film['tmdb_id']),
-                "title": film['title'],
-                "overview": str(film['overview'])[:200],
-                "genres": film['genres'],
-                "release_year": film['release_year'],
-                "vote_average": film['vote_average'],
-                "vote_count": film['vote_count'],
-                "poster_path": film['poster_path'],
-                "is_indie": bool(film['is_indie']),
+                "tmdb_id":          int(film['tmdb_id']),
+                "title":            _safe(film['title'], str),
+                "overview":         _safe(film['overview'], str)[:200],
+                "genres":           _safe(film['genres'], str),
+                "release_year":     int(film['release_year']) if str(film['release_year']) not in ('nan', '') else 0,
+                "vote_average":     float(film['vote_average']) if str(film['vote_average']) not in ('nan', '') else 0.0,
+                "vote_count":       int(film['vote_count']) if str(film['vote_count']) not in ('nan', '') else 0,
+                "poster_path":      _safe(film['poster_path'], str),
+                "is_indie":         bool(film['is_indie']),
                 "similarity_score": float(sim_scores[i]),
-                "model": "tfidf"
+                "model":            "tfidf"
             })
 
         return results
