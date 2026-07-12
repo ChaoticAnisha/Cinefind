@@ -78,10 +78,7 @@ export default function LandingPage() {
                     backgroundImage: `url(${url})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
-                    transition: 'transform 0.3s ease',
                   }}
-                  onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.05)')}
-                  onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
                 />
               ))}
             </div>
