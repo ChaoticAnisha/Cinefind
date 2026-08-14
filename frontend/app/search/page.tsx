@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Search, SlidersHorizontal, X } from 'lucide-react'
 import { searchFilms } from '@/lib/api'
+import { RecommendedFilm } from '@/lib/types'
 import FilmGrid from '@/components/FilmGrid'
 import PosterCollage from '@/app/components/PosterCollage'
 
@@ -21,7 +22,7 @@ export default function SearchPage() {
   const [selectedGenres, setSelectedGenres] = useState<string[]>([])
   const [selectedLang, setSelectedLang] = useState('')
   const [indieOnly, setIndieOnly] = useState(false)
-  const [films, setFilms] = useState<any[]>([])
+  const [films, setFilms] = useState<RecommendedFilm[]>([])
   const [loading, setLoading] = useState(false)
   const [searched, setSearched] = useState(false)
   const [total, setTotal] = useState(0)
@@ -47,8 +48,9 @@ export default function SearchPage() {
       })
       setFilms(data.films)
       setTotal(data.pagination?.total || 0)
-    } catch (err: any) {
-      setError(err?.message || 'Search failed')
+    } catch (err: unknown) {
+      console.error(err)
+      setError('Search failed')
     } finally {
       setLoading(false)
     }

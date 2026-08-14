@@ -25,11 +25,12 @@ export default function LoginPage() {
       const data = await login(email, password)
       setAuth(data.user, data.token)
       router.push('/discover')
-    } catch (err: any) {
-      setError(err.response?.data?.error || 'Login failed. Check your credentials.')
-    } finally {
-      setLoading(false)
-    }
+    } catch (err: unknown) {
+        console.error(err)
+        setError('Login failed. Check your credentials.')
+      } finally {
+        setLoading(false)
+      }
   }
 
   return (
@@ -51,7 +52,7 @@ export default function LoginPage() {
             Your personal<br />indie film curator
           </h2>
           <p className="text-[#a1a1aa] text-sm leading-relaxed max-w-xs">
-            3,000+ indie films. Three AI models. One purpose — finding the film that fits exactly what you're in the mood for.
+            3,000+ indie films. Three AI models. One purpose — finding the film that fits exactly what you are in the mood for.
           </p>
         </div>
 

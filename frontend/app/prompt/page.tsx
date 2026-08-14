@@ -36,7 +36,7 @@ export default function PromptPage() {
   const [prompt, setPrompt] = useState('')
   const [model, setModel] = useState<ModelType>('hybrid')
   const [results, setResults] = useState<RecommendedFilm[]>([])
-  const [compareResults, setCompareResults] = useState<any>(null)
+  const [compareResults, setCompareResults] = useState<Record<ModelType, { count?: number; results?: RecommendedFilm[] } | undefined> | null>(null)
   const [loading, setLoading] = useState(false)
   const [mode, setMode] = useState<'single' | 'compare'>('single')
   const [lastQuery, setLastQuery] = useState('')
@@ -59,8 +59,9 @@ export default function PromptPage() {
         const data = await getPromptRecommendations(q, model, 12)
         setResults(data)
       }
-    } catch (err: any) {
-      setError(err?.response?.data?.error || err?.message || 'Search failed')
+    } catch (err: unknown) {
+      console.error(err)
+      setError('Search failed')
     } finally {
       setLoading(false)
     }
@@ -81,7 +82,7 @@ export default function PromptPage() {
           </h1>
           <p className="text-[#a1a1aa] text-sm leading-relaxed">
             Our AI understands mood, genre, era, language, and style — not just keywords.
-            Try something like <span className="text-white italic">"a slow burn thriller set in rural Ireland"</span>.
+            Try something like <span className="text-white italic">a slow burn thriller set in rural Ireland</span>.
           </p>
         </div>
       </div>
@@ -177,7 +178,7 @@ export default function PromptPage() {
         ) : mode === 'compare' && compareResults ? (
           <div className="space-y-12">
             <p className="text-center text-[#a1a1aa] text-sm">
-              Comparing 3 models for: <span className="text-white font-medium">"{lastQuery}"</span>
+              Comparing 3 models for: <span className="text-white font-medium">{lastQuery}</span>
             </p>
             {([
               { key: 'tfidf',     label: 'TF-IDF — Keyword Match',      colorKey: 'blue',   scoreField: 'similarity_score' },
@@ -201,7 +202,7 @@ export default function PromptPage() {
         ) : results.length > 0 ? (
           <div>
             <p className="text-[#52525b] text-xs text-center mb-6 uppercase tracking-wider">
-              {results.length} films · "{lastQuery}" · {MODEL_INFO[model].label} model
+            {results.length} films · {lastQuery} · {MODEL_INFO[model].label} model
             </p>
             <FilmGrid films={results} />
           </div>
