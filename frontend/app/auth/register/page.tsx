@@ -27,8 +27,9 @@ export default function RegisterPage() {
       const data = await register(form.email, form.password, form.username)
       setAuth(data.user, data.token)
       router.push('/profile')
-    } catch (err: any) {
-      setError(err.response?.data?.error || 'Registration failed. Try a different email.')
+    } catch (err: unknown) {
+      console.error(err)
+      setError('Registration failed. Try a different email.')
     } finally {
       setLoading(false)
     }

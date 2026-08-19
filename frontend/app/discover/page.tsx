@@ -98,9 +98,9 @@ export default function DiscoverPage() {
     try {
       const results = await getPromptRecommendations(query, 'hybrid', 24)
       setFilms(results)
-    } catch (err: any) {
-      const detail = err?.response?.data?.detail || err?.response?.data?.error || err?.message || 'Unknown error'
-      setError(`Failed to load films: ${detail}`)
+    } catch (err: unknown) {
+      console.error(err)
+      setError('Failed to load films: Unknown error')
       setFilms([])
     } finally {
       setLoading(false)
@@ -139,9 +139,9 @@ export default function DiscoverPage() {
           const generic = await getPromptRecommendations(MOODS[0].query, 'hybrid', 24)
           setFilms(generic)
         }
-      } catch (err: any) {
-        const detail = err?.response?.data?.detail || err?.response?.data?.error || err?.message || 'Unknown error'
-        setError(`Could not reach the recommendation service: ${detail}`)
+      } catch (err: unknown) {
+          console.error(err)
+          setError('Could not reach the recommendation service: Unknown error')
       } finally {
         setLoading(false)
       }

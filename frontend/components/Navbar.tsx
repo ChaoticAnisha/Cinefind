@@ -27,7 +27,13 @@ export default function Navbar() {
   }, [])
 
   // Close mobile menu on route change
-  useEffect(() => { setMobileOpen(false) }, [pathname])
+  useEffect(() => {
+    if (mobileOpen) {
+      const t = setTimeout(() => setMobileOpen(false), 0)
+      return () => clearTimeout(t)
+    }
+    return undefined
+  }, [pathname, mobileOpen])
 
   const handleLogout = () => {
     logout()

@@ -2,8 +2,25 @@ import FilmCard from './FilmCard'
 import { SkeletonGrid } from './LoadingSpinner'
 import { Film } from 'lucide-react'
 
+interface FilmItem {
+  tmdbId?: number | string
+  tmdb_id?: number | string
+  title?: string
+  posterPath?: string
+  poster_path?: string
+  voteAverage?: number
+  vote_average?: number
+  voteCount?: number
+  releaseYear?: string | number
+  release_year?: string | number
+  genres?: string
+  isIndie?: boolean
+  is_indie?: boolean
+  [key: string]: unknown
+}
+
 interface FilmGridProps {
-  films?: any[]
+  films?: FilmItem[]
   showScore?: boolean
   scoreField?: string
   emptyMessage?: string

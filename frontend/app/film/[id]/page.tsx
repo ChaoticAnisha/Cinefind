@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { Star, Clock, Globe, Bookmark, Check, Film, ChevronDown, ChevronUp } from 'lucide-react'
 import { getFilm, getSimilarFilms, addToWatchlist, removeFromWatchlist, rateFilm } from '@/lib/api'
 import { Film as FilmType, RecommendedFilm } from '@/lib/types'
@@ -20,6 +20,7 @@ const MODEL_DESCS  = {
 
 export default function FilmDetailPage() {
   const { id } = useParams()
+  const router = useRouter()
   const { user } = useAuthStore()
   const [film, setFilm] = useState<FilmType | null>(null)
   const [similar, setSimilar] = useState<RecommendedFilm[]>([])
@@ -59,7 +60,7 @@ export default function FilmDetailPage() {
   }
 
   const handleWatchlist = async () => {
-    if (!user) { window.location.href = '/auth/login'; return }
+    if (!user) { router.push('/auth/login'); return }
     if (watchStatus) {
       await removeFromWatchlist(tmdbId)
       setWatchStatus(null)
@@ -70,7 +71,7 @@ export default function FilmDetailPage() {
   }
 
   const handleRate = async (rating: number) => {
-    if (!user) { window.location.href = '/auth/login'; return }
+    if (!user) { router.push('/auth/login'); return }
     await rateFilm(tmdbId, rating)
     setUserRating(rating)
   }
@@ -132,7 +133,7 @@ export default function FilmDetailPage() {
               </div>
 
               {film.tagline && (
-                <p className="text-[#a78bfa] italic text-base mb-4">"{film.tagline}"</p>
+                              <p className="text-[#a78bfa] italic text-base mb-4">{film.tagline}</p>
               )}
 
               {/* Metadata row */}
